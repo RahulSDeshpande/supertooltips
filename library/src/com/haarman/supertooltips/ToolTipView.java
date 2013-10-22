@@ -151,8 +151,13 @@ public class ToolTipView extends LinearLayout implements ViewTreeObserver.OnPreD
 
 		final boolean showBelow = toolTipViewAboveY < 0;
 
-		mTopPointerView.setVisibility(showBelow ? VISIBLE : GONE);
-		mBottomPointerView.setVisibility(showBelow ? GONE : VISIBLE);
+		if (mToolTip.getUseArrow()) {
+			mTopPointerView.setVisibility(showBelow ? VISIBLE : GONE);
+			mBottomPointerView.setVisibility(showBelow ? GONE : VISIBLE);
+		} else {
+			mTopPointerView.setVisibility(GONE);
+			mBottomPointerView.setVisibility(GONE);
+		}
 
 		toolTipViewY = showBelow ? toolTipViewBelowY : toolTipViewAboveY;
 

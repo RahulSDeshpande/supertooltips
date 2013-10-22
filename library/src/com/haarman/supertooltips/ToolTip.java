@@ -34,6 +34,7 @@ public class ToolTip {
 	private boolean alphaOut;
 	private boolean scaleIn;
 	private boolean scaleOut;
+	private boolean useArrow;
 
 	/**
 	 * Creates a new ToolTip without any values.
@@ -49,6 +50,7 @@ public class ToolTip {
 		alphaOut = true;
 		scaleIn = true;
 		scaleOut = true;
+		useArrow = true;
 	}
 
 	/**
@@ -139,12 +141,21 @@ public class ToolTip {
 		return this;
 	}
 
+	public ToolTip withArrow(boolean flag) {
+		useArrow = flag;
+		return this;
+	}
+
 	public boolean getAlphaIn() {
 		return alphaIn;
 	}
 
 	public boolean getAlphaOut() {
 		return alphaOut;
+	}
+
+	public boolean getUseArrow() {
+		return useArrow;
 	}
 
 	public boolean getScaleIn() {
