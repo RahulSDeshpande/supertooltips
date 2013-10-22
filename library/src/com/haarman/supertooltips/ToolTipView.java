@@ -154,23 +154,33 @@ public class ToolTipView extends LinearLayout implements ViewTreeObserver.OnPreD
 		mTopPointerView.setVisibility(showBelow ? VISIBLE : GONE);
 		mBottomPointerView.setVisibility(showBelow ? GONE : VISIBLE);
 
-		toolTipViewY = showBelow?  toolTipViewBelowY : toolTipViewAboveY;
+		toolTipViewY = showBelow ? toolTipViewBelowY : toolTipViewAboveY;
 
-		List<Animator> animators = new ArrayList<Animator>();
+		final List<Animator> animators = new ArrayList<Animator>();
 
-		if (mToolTip.getAnimationType() == ToolTip.ANIMATIONTYPE_FROMMASTERVIEW) {
+		switch (mToolTip.getTranslateTypeIn()) {
+		case FROM_MASTER_VIEW:
 			animators.add(ObjectAnimator.ofFloat(this, "translationY", mRelativeMasterViewY + mView.getHeight() / 2
 					- getHeight() / 2, toolTipViewY));
 			animators.add(ObjectAnimator.ofFloat(this, "translationX", mRelativeMasterViewX + mView.getWidth() / 2
 					- mWidth / 2, toolTipViewX));
-		} else if (mToolTip.getAnimationType() == ToolTip.ANIMATIONTYPE_FROMTOP) {
+			break;
+		case FROM_TOP:
 			animators.add(ObjectAnimator.ofFloat(this, "translationY", 0, toolTipViewY));
+			break;
+		case NONE:
+			setX(toolTipViewX);
+			setY(toolTipViewY);
+			break;
 		}
 
-		animators.add(ObjectAnimator.ofFloat(this, "scaleX", 0, 1));
-		animators.add(ObjectAnimator.ofFloat(this, "scaleY", 0, 1));
+		if (mToolTip.getScaleIn()) {
+			animators.add(ObjectAnimator.ofFloat(this, "scaleX", 0, 1));
+			animators.add(ObjectAnimator.ofFloat(this, "scaleY", 0, 1));
+		}
 
-		animators.add(ObjectAnimator.ofFloat(this, "alpha", 0, 1));
+		if (mToolTip.getAlphaIn())
+			animators.add(ObjectAnimator.ofFloat(this, "alpha", 0, 1));
 
 		AnimatorSet animatorSet = new AnimatorSet();
 		animatorSet.playTogether(animators);
@@ -203,20 +213,29 @@ public class ToolTipView extends LinearLayout implements ViewTreeObserver.OnPreD
 	}
 
 	public void remove() {
-		List<Animator> animators = new ArrayList<Animator>();
-		if (mToolTip.getAnimationType() == ToolTip.ANIMATIONTYPE_FROMMASTERVIEW) {
+		final List<Animator> animators = new ArrayList<Animator>();
+
+		switch (mToolTip.getTranslateTypeOut()) {
+		case FROM_MASTER_VIEW:
 			animators.add(ObjectAnimator.ofFloat(this, "translationY", getY(), mRelativeMasterViewY + mView.getHeight()
 					/ 2 - getHeight() / 2));
 			animators.add(ObjectAnimator.ofFloat(this, "translationX", getX(), mRelativeMasterViewX + mView.getWidth()
 					/ 2 - mWidth / 2));
-		} else {
+			break;
+		case FROM_TOP:
 			animators.add(ObjectAnimator.ofFloat(this, "translationY", getY(), 0));
+			break;
+		case NONE:
+			break;
 		}
 
-		animators.add(ObjectAnimator.ofFloat(this, "scaleX", 1, 0));
-		animators.add(ObjectAnimator.ofFloat(this, "scaleY", 1, 0));
+		if (mToolTip.getScaleOut()) {
+			animators.add(ObjectAnimator.ofFloat(this, "scaleX", 1, 0));
+			animators.add(ObjectAnimator.ofFloat(this, "scaleY", 1, 0));
+		}
 
-		animators.add(ObjectAnimator.ofFloat(this, "alpha", 1, 0));
+		if (mToolTip.getAlphaOut())
+			animators.add(ObjectAnimator.ofFloat(this, "alpha", 1, 0));
 
 		AnimatorSet animatorSet = new AnimatorSet();
 		animatorSet.playTogether(animators);

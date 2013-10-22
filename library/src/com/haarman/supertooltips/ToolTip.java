@@ -19,110 +19,168 @@ import android.view.View;
 
 public class ToolTip {
 
-    public static final int ANIMATIONTYPE_FROMMASTERVIEW = 101;
-    public static final int ANIMATIONTYPE_FROMTOP = 102;
-    //
-    private CharSequence text;
-    private int textResId;
-    private int color;
-    private View contentView;
-    private int animationType;
-    private boolean shadow;
+	public enum AnimationType {
+		FROM_MASTER_VIEW, FROM_TOP, NONE
+	}
 
-    /**
-     * Creates a new ToolTip without any values.
-     */
-    public ToolTip() {
-        text = null;
-        textResId = 0;
-        color = 0;
-        contentView = null;
-        animationType = ANIMATIONTYPE_FROMMASTERVIEW;
-    }
+	private CharSequence text;
+	private int textResId;
+	private int color;
+	private View contentView;
+	private AnimationType translateIn;
+	private AnimationType translateOut;
+	private boolean shadow;
+	private boolean alphaIn;
+	private boolean alphaOut;
+	private boolean scaleIn;
+	private boolean scaleOut;
 
-    /**
-     * Set the text to show. Has no effect when a content View is set using setContentView().
-     *
-     * @return this ToolTip to build upon.
-     */
-    public ToolTip withText(CharSequence text) {
-        this.text = text;
-        this.textResId = 0;
-        return this;
-    }
+	/**
+	 * Creates a new ToolTip without any values.
+	 */
+	public ToolTip() {
+		text = null;
+		textResId = 0;
+		color = 0;
+		contentView = null;
+		translateIn = AnimationType.FROM_MASTER_VIEW;
+		translateOut = AnimationType.FROM_MASTER_VIEW;
+		alphaIn = true;
+		alphaOut = true;
+		scaleIn = true;
+		scaleOut = true;
+	}
 
-    /**
-     * Set the text resource id to show. Has no effect when a content View is set using setContentView().
-     *
-     * @return this ToolTip to build upon.
-     */
-    public ToolTip withText(int resId) {
-        this.textResId = resId;
-        this.text = null;
-        return this;
-    }
+	/**
+	 * Set the text to show. Has no effect when a content View is set using setContentView().
+	 * 
+	 * @return this ToolTip to build upon.
+	 */
+	public ToolTip withText(CharSequence text) {
+		this.text = text;
+		this.textResId = 0;
+		return this;
+	}
 
-    /**
-     * Set the color of the ToolTop. Default is white.
-     *
-     * @return this ToolTip to build upon.
-     */
-    public ToolTip withColor(int color) {
-        this.color = color;
-        return this;
-    }
+	/**
+	 * Set the text resource id to show. Has no effect when a content View is set using setContentView().
+	 * 
+	 * @return this ToolTip to build upon.
+	 */
+	public ToolTip withText(int resId) {
+		this.textResId = resId;
+		this.text = null;
+		return this;
+	}
 
-    /**
-     * Set a custom content View for the ToolTip. This will cause any text that has been set to be ignored.
-     *
-     * @return this ToolTip to build upon.
-     */
-    public ToolTip withContentView(View view) {
-        this.contentView = view;
-        return this;
-    }
+	/**
+	 * Set the color of the ToolTop. Default is white.
+	 * 
+	 * @return this ToolTip to build upon.
+	 */
+	public ToolTip withColor(int color) {
+		this.color = color;
+		return this;
+	}
 
-    /**
-     * Set the animation type for the ToolTip. One of ANIMATIONTYPE_FROMMASTERVIEW and ANIMATIONTYPE_FROMTOP. Default ANIMATIONTYPE_FROMMASTERVIEW.
-     *
-     * @return this ToolTip to build upon.
-     */
-    public ToolTip withAnimationType(int animationType) {
-        this.animationType = animationType;
-        return this;
-    }
+	/**
+	 * Set a custom content View for the ToolTip. This will cause any text that has been set to be ignored.
+	 * 
+	 * @return this ToolTip to build upon.
+	 */
+	public ToolTip withContentView(View view) {
+		this.contentView = view;
+		return this;
+	}
 
-    /**
-     * Set whether to show a shadow below the ToolTip.
-     *
-     * @return this ToolTip to build upon.
-     */
-    public ToolTip withShadow(boolean shadow) {
-        this.shadow = shadow;
-        return this;
-    }
+	/**
+	 * Set the animation type for the ToolTip. One of ANIMATIONTYPE_FROMMASTERVIEW and ANIMATIONTYPE_FROMTOP. Default
+	 * ANIMATIONTYPE_FROMMASTERVIEW.
+	 * 
+	 * @return this ToolTip to build upon.
+	 */
+	public ToolTip withTranslateTypeIn(AnimationType animationType) {
+		this.translateIn = animationType;
+		return this;
+	}
 
-    public CharSequence getText() {
-        return text;
-    }
+	public ToolTip withTranslateTypeOut(AnimationType animationType) {
+		this.translateOut = animationType;
+		return this;
+	}
 
-    public int getTextResId() {
-        return textResId;
-    }
+	/**
+	 * Set whether to show a shadow below the ToolTip.
+	 * 
+	 * @return this ToolTip to build upon.
+	 */
+	public ToolTip withShadow(boolean shadow) {
+		this.shadow = shadow;
+		return this;
+	}
 
-    public int getColor() {
-        return color;
-    }
+	public ToolTip withAlphaIn(boolean flag) {
+		alphaIn = flag;
+		return this;
+	}
 
-    public View getContentView() {
-        return contentView;
-    }
+	public ToolTip withAlphaOut(boolean flag) {
+		alphaOut = flag;
+		return this;
+	}
 
-    public int getAnimationType() {
-        return animationType;
-    }
+	public ToolTip withScaleIn(boolean flag) {
+		scaleIn = flag;
+		return this;
+	}
 
-    public boolean getShadow() {
-        return shadow;
-    }
+	public ToolTip withScaleOut(boolean flag) {
+		scaleOut = flag;
+		return this;
+	}
+
+	public boolean getAlphaIn() {
+		return alphaIn;
+	}
+
+	public boolean getAlphaOut() {
+		return alphaOut;
+	}
+
+	public boolean getScaleIn() {
+		return scaleIn;
+	}
+
+	public boolean getScaleOut() {
+		return scaleOut;
+	}
+
+	public CharSequence getText() {
+		return text;
+	}
+
+	public int getTextResId() {
+		return textResId;
+	}
+
+	public int getColor() {
+		return color;
+	}
+
+	public View getContentView() {
+		return contentView;
+	}
+
+	public AnimationType getTranslateTypeIn() {
+		return translateIn;
+	}
+
+	public AnimationType getTranslateTypeOut() {
+		return translateOut;
+	}
+
+	public boolean getShadow() {
+		return shadow;
+	}
+
 }
